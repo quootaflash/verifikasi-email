@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konfirmasi Verifikasi Email</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .verification-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 32px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .email-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        .confirm-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 24px;
+            width: 100%;
+        }
+        
+        .confirm-btn:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+        
+        .confirm-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .resend-btn {
+            background: transparent;
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-left: 8px;
+        }
+        
+        .resend-btn:hover {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .resend-btn:disabled {
+            background: #e2e8f0;
+            color: #94a3b8;
+            border-color: #e2e8f0;
+            cursor: not-allowed;
+        }
+        
+        .checkmark-container {
+            display: none;
+            margin: 32px auto;
+            width: 80px;
+            height: 80px;
+        }
+        
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 5;
+            stroke: #10b981;
+            stroke-miterlimit: 10;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+        }
+        
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 5;
+            stroke-miterlimit: 10;
+            stroke: #10b981;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+        
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        @keyframes scale {
+            0%, 100% {
+                transform: none;
+            }
+            50% {
+                transform: scale3d(1.1, 1.1, 1);
+            }
+        }
+        
+        @keyframes fill {
+            100% {
+                box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
+            }
+        }
+        
+        .success-message {
+            display: none;
+            margin-top: 24px;
+            padding: 20px;
+            background: #f0fdf4;
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
+        }
+        
+        .error-message {
+            display: none;
+            margin-top: 16px;
+            padding: 16px;
+            background: #fef2f2;
+            border-radius: 8px;
+            border-left: 4px solid #ef4444;
+            color: #dc2626;
+        }
+        
+        .loading {
+            display: none;
+            margin: 20px auto;
+            width: 32px;
+            height: 32px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .countdown {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="verification-card">
+        <div class="email-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+        </div>
+        
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">Verifikasi Email Anda</h1>
+        <p class="text-gray-600 mb-6">
+            Terima kasih telah mendaftar! Silakan klik tombol di bawah untuk mengkonfirmasi alamat email Anda dan menyelesaikan proses pendaftaran.
+        </p>
+        
+        <button class="confirm-btn" id="confirmBtn" onclick="confirmEmail()">
+            Konfirmasi Email Sekarang
+        </button>
+        
+        <div class="loading" id="loading"></div>
+        
+        <div class="checkmark-container" id="checkmarkContainer">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            <h3 class="text-lg font-semibold text-green-800 mb-2">🎉 Verifikasi Berhasil!</h3>
+            <p class="text-green-700">Email Anda telah berhasil diverifikasi. Selamat! Akun Anda sekarang sudah aktif dan siap digunakan.</p>
+        </div>
+        
+        <div class="error-message" id="errorMessage"></div>
+        
+        <div class="mt-8 pt-6 border-t border-gray-200">
+            <p class="text-sm text-gray-600 mb-3">
+                Tidak menerima email verifikasi?
+            </p>
+            <div class="flex items-center justify-center">
+                <button class="resend-btn" id="resendBtn" onclick="resendVerificationEmail()">
+                    Kirim Ulang Email
+                </button>
+                <span class="countdown" id="countdown"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Konfigurasi Supabase - Ganti dengan URL dan key Anda
+        const SUPABASE_URL = 'https://vnfimbhdoifpqmpwahrh.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuZmltYmhkb2lmcHFtcHdhaHJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4Mjg5OTcsImV4cCI6MjA3MTQwNDk5N30.WQREDE-yFP0BnaZagEUKEI5s0iPxXGsnmMm4WdUfEpw';
+        
+        let resendCooldown = 0;
+        let countdownInterval = null;
+        
+        // Fungsi untuk mendapatkan token akses dari URL (jika ada)
+        function getAccessTokenFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('access_token') || urlParams.get('token');
+        }
+        
+        // Fungsi untuk mengonfirmasi email
+        async function confirmEmail() {
+            const confirmBtn = document.getElementById('confirmBtn');
+            const loading = document.getElementById('loading');
+            const checkmarkContainer = document.getElementById('checkmarkContainer');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Sembunyikan pesan error sebelumnya
+            errorMessage.style.display = 'none';
+            
+            // Tampilkan loading
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = 'Memproses...';
+            loading.style.display = 'block';
+            
+            try {
+                const accessToken = getAccessTokenFromUrl();
+                
+                if (!accessToken) {
+                    throw new Error('Token verifikasi tidak ditemukan. Silakan gunakan link dari email verifikasi.');
+                }
+                
+                // Verifikasi email melalui Supabase API
+                const response = await fetch(`${SUPABASE_URL}/auth/v1/verify`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_ANON_KEY
+                    },
+                    body: JSON.stringify({
+                        type: 'signup',
+                        token: accessToken
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.message || 'Gagal memverifikasi email');
+                }
+                
+                // Verifikasi berhasil
+                loading.style.display = 'none';
+                checkmarkContainer.style.display = 'block';
+                
+                // Tampilkan pesan sukses setelah animasi selesai
+                setTimeout(() => {
+                    successMessage.style.display = 'block';
+                    confirmBtn.style.display = 'none';
+                }, 1500);
+                
+            } catch (error) {
+                loading.style.display = 'none';
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'Konfirmasi Email Sekarang';
+                
+                // Tampilkan pesan error
+                errorMessage.textContent = error.message;
+                errorMessage.style.display = 'block';
+            }
+        }
+        
+        // Fungsi untuk mengirim ulang email verifikasi
+        async function resendVerificationEmail() {
+            const resendBtn = document.getElementById('resendBtn');
+            const countdownElement = document.getElementById('countdown');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (resendCooldown > 0) return;
+            
+            // Sembunyikan pesan error sebelumnya
+            errorMessage.style.display = 'none';
+            
+            resendBtn.disabled = true;
+            resendBtn.textContent = 'Mengirim...';
+            
+            try {
+                // Kirim request untuk mengirim ulang email verifikasi
+                // Catatan: Di aplikasi nyata, Anda perlu mendapatkan access token pengguna yang login
+                const response = await fetch(`${SUPABASE_URL}/auth/v1/recover`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_ANON_KEY
+                    },
+                    body: JSON.stringify({
+                        email: 'user@example.com' // Ganti dengan email pengguna yang sesuai
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.message || 'Gagal mengirim ulang email verifikasi');
+                }
+                
+                // Set cooldown 60 detik
+                resendCooldown = 60;
+                startCountdown();
+                
+                resendBtn.textContent = 'Terkirim!';
+                setTimeout(() => {
+                    resendBtn.textContent = 'Kirim Ulang Email';
+                }, 2000);
+                
+            } catch (error) {
+                errorMessage.textContent = error.message;
+                errorMessage.style.display = 'block';
+                resendBtn.disabled = false;
+                resendBtn.textContent = 'Kirim Ulang Email';
+            } finally {
+                setTimeout(() => {
+                    resendBtn.disabled = false;
+                }, 2000);
+            }
+        }
+        
+        // Fungsi untuk countdown pengiriman ulang
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            const resendBtn = document.getElementById('resendBtn');
+            
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            countdownElement.textContent = ` (${resendCooldown}s)`;
+            
+            countdownInterval = setInterval(() => {
+                resendCooldown--;
+                
+                if (resendCooldown <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.textContent = '';
+                    resendBtn.disabled = false;
+                } else {
+                    countdownElement.textContent = ` (${resendCooldown}s)`;
+                }
+            }, 1000);
+        }
+        
+        // Cek jika ada token di URL, otomatis verifikasi
+        document.addEventListener('DOMContentLoaded', function() {
+            const accessToken = getAccessTokenFromUrl();
+            if (accessToken) {
+                // Otomatis mulai verifikasi jika token ditemukan di URL
+                confirmEmail();
+            }
+        });
+    </script>
+</body>
+</html>
+
