@@ -3,416 +3,395 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konfirmasi Verifikasi Email</title>
+    <title>CV Kreatif V5 - Minimal Accent</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        body {
-            background: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .verification-card {
+        .a4-paper {
+            width: 210mm;
+            min-height: 297mm;
             background: white;
-            border-radius: 16px;
-            padding: 40px 32px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            max-width: 480px;
-            width: 100%;
-            position: relative;
+            box-shadow: 0 25px 60px -15px rgb(15 23 42 / 0.2);
+            margin: 30px auto;
+            padding: 0;
             overflow: hidden;
-            border: 1px solid #e2e8f0;
+            position: relative;
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 11.1pt;
+            line-height: 1.78;
+            color: #1f2937;
+        }
+
+        .accent-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 14mm;
+            background: linear-gradient(to bottom, #10b981, #059669);
+        }
+
+        .main-area {
+            padding: 45px 48px 45px 68px;
+        }
+
+        .name {
+            font-family: 'Playfair Display', serif;
+            font-size: 36pt;
+            font-weight: 700;
+            letter-spacing: -2px;
+            color: #111827;
+        }
+
+        .section-title {
+            font-size: 14.5pt;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 12px;
+            position: relative;
         }
         
-        .email-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 24px;
-            background: #3b82f6;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2rem;
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: #10b981;
         }
-        
-        .confirm-btn {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 24px;
-            width: 100%;
+
+        .profile-photo {
+            width: 128px;
+            height: 128px;
+            object-fit: cover;
+            border: 6px solid #f3f4f6;
+            border-radius: 9999px;
+            box-shadow: 0 10px 25px -5px rgb(16 185 129 / 0.2);
         }
-        
-        .confirm-btn:hover {
-            background: #2563eb;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+
+        @media print {
+            .no-print { display: none !important; }
+            .a4-paper { margin: 0; box-shadow: none; }
         }
-        
-        .confirm-btn:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .resend-btn {
-            background: transparent;
-            color: #3b82f6;
-            border: 1px solid #3b82f6;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-left: 8px;
-        }
-        
-        .resend-btn:hover {
-            background: #3b82f6;
-            color: white;
-        }
-        
-        .resend-btn:disabled {
-            background: #e2e8f0;
-            color: #94a3b8;
-            border-color: #e2e8f0;
-            cursor: not-allowed;
-        }
-        
-        .checkmark-container {
-            display: none;
-            margin: 32px auto;
-            width: 80px;
-            height: 80px;
-        }
-        
-        .checkmark {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: block;
-            stroke-width: 5;
-            stroke: #10b981;
-            stroke-miterlimit: 10;
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
-            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
-        }
-        
-        .checkmark-circle {
-            stroke-dasharray: 166;
-            stroke-dashoffset: 166;
-            stroke-width: 5;
-            stroke-miterlimit: 10;
-            stroke: #10b981;
-            fill: none;
-            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
-        }
-        
-        .checkmark-check {
-            transform-origin: 50% 50%;
-            stroke-dasharray: 48;
-            stroke-dashoffset: 48;
-            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
-        }
-        
-        @keyframes stroke {
-            100% {
-                stroke-dashoffset: 0;
-            }
-        }
-        
-        @keyframes scale {
-            0%, 100% {
-                transform: none;
-            }
-            50% {
-                transform: scale3d(1.1, 1.1, 1);
-            }
-        }
-        
-        @keyframes fill {
-            100% {
-                box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
-            }
-        }
-        
-        .success-message {
-            display: none;
-            margin-top: 24px;
-            padding: 20px;
-            background: #f0fdf4;
-            border-radius: 8px;
-            border-left: 4px solid #10b981;
-        }
-        
-        .error-message {
-            display: none;
-            margin-top: 16px;
-            padding: 16px;
-            background: #fef2f2;
-            border-radius: 8px;
-            border-left: 4px solid #ef4444;
-            color: #dc2626;
-        }
-        
-        .loading {
-            display: none;
-            margin: 20px auto;
-            width: 32px;
-            height: 32px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3b82f6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .countdown {
-            color: #64748b;
-            font-size: 0.9rem;
-            margin-top: 8px;
-        }
+        @page { size: A4 portrait; margin: 0; }
     </style>
 </head>
-<body>
-    <div class="verification-card">
-        <div class="email-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-        </div>
-        
-        <h1 class="text-2xl font-bold text-gray-800 mb-4">Verifikasi Email Anda</h1>
-        <p class="text-gray-600 mb-6">
-            Terima kasih telah mendaftar! Silakan klik tombol di bawah untuk mengkonfirmasi alamat email Anda dan menyelesaikan proses pendaftaran.
-        </p>
-        
-        <button class="confirm-btn" id="confirmBtn" onclick="confirmEmail()">
-            Konfirmasi Email Sekarang
-        </button>
-        
-        <div class="loading" id="loading"></div>
-        
-        <div class="checkmark-container" id="checkmarkContainer">
-            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
-                <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-            </svg>
-        </div>
-        
-        <div class="success-message" id="successMessage">
-            <h3 class="text-lg font-semibold text-green-800 mb-2">🎉 Verifikasi Berhasil!</h3>
-            <p class="text-green-700">Email Anda telah berhasil diverifikasi. Selamat! Akun Anda sekarang sudah aktif dan siap digunakan.</p>
-        </div>
-        
-        <div class="error-message" id="errorMessage"></div>
-        
-        <div class="mt-8 pt-6 border-t border-gray-200">
-            <p class="text-sm text-gray-600 mb-3">
-                Tidak menerima email verifikasi?
-            </p>
-            <div class="flex items-center justify-center">
-                <button class="resend-btn" id="resendBtn" onclick="resendVerificationEmail()">
-                    Kirim Ulang Email
+<body class="bg-gradient-to-br from-emerald-50 to-slate-100 font-sans">
+
+    <!-- NAVBAR -->
+    <nav class="bg-zinc-900 text-white sticky top-0 z-50 no-print shadow-xl">
+        <div class="max-w-screen-2xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <i class="fa-solid fa-leaf text-3xl text-emerald-400"></i>
+                <div>
+                    <h1 class="text-2xl font-semibold tracking-tight">CV KREATIF <span class="text-emerald-400">V5</span></h1>
+                    <p class="text-xs text-slate-400 -mt-0.5">Minimalist Accent • Premium Clean</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-x-3 text-sm">
+                <button onclick="autoSaveDraft()" class="flex items-center gap-x-2 px-5 h-10 bg-white/10 hover:bg-white/20 rounded-2xl font-medium">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Draft
                 </button>
-                <span class="countdown" id="countdown"></span>
+                <button onclick="saveAsImage()" class="flex items-center gap-x-2 px-5 h-10 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-medium">
+                    <i class="fa-solid fa-image"></i> PNG
+                </button>
+                <button onclick="generatePDF()" class="flex items-center gap-x-2 px-6 h-10 bg-teal-600 hover:bg-teal-700 text-white rounded-2xl font-medium">
+                    <i class="fa-solid fa-file-pdf"></i> PDF
+                </button>
+                <button onclick="printLetter()" class="flex items-center gap-x-2 px-6 h-10 bg-white text-zinc-900 hover:bg-slate-100 rounded-2xl font-medium">
+                    <i class="fa-solid fa-print"></i> Cetak
+                </button>
+                <button onclick="clearForm()" class="flex items-center justify-center w-10 h-10 text-red-400 hover:text-red-500 rounded-2xl">
+                    <i class="fa-solid fa-trash text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-screen-2xl mx-auto px-6 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- FORM INPUT -->
+            <div class="lg:col-span-5 bg-white rounded-3xl shadow-2xl p-8 no-print overflow-auto max-h-screen">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-semibold text-emerald-700">CV Kreatif V5</h2>
+                    <p class="text-emerald-600 text-sm mt-1">Minimalist dengan Accent Bar</p>
+                </div>
+                
+                <div class="space-y-9">
+                    <!-- Foto -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-2">Foto Profil</label>
+                        <input type="file" id="foto-upload" accept="image/*" class="hidden" onchange="previewFoto(this)">
+                        <button onclick="document.getElementById('foto-upload').click()" 
+                                class="w-full h-40 border-2 border-dashed border-emerald-300 hover:border-emerald-500 rounded-3xl flex flex-col items-center justify-center text-slate-500">
+                            <i class="fa-solid fa-user-circle text-6xl mb-3"></i>
+                            <span class="text-sm font-medium">Upload Foto</span>
+                        </button>
+                        <img id="foto-preview" class="hidden mx-auto mt-4 rounded-3xl shadow" style="width:120px; height:120px; object-fit:cover;">
+                    </div>
+
+                    <!-- Data Diri -->
+                    <div>
+                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Data Diri</h3>
+                        <input id="nama" type="text" value="Muhammad Hafis" placeholder="Nama Lengkap" 
+                               class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mb-4" oninput="updatePreview()">
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <input id="telepon" type="tel" value="0856-1234-5678" placeholder="Telepon" 
+                                   class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                            <input id="email" type="email" value="hafis@example.com" placeholder="Email" 
+                                   class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                        </div>
+                        <input id="alamat" type="text" value="Paninggaran, Pekalongan, Jawa Tengah" placeholder="Domisili" 
+                               class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mt-4" oninput="updatePreview()">
+                        <input id="linkedin" type="text" value="linkedin.com/in/hafis" placeholder="LinkedIn / Portfolio" 
+                               class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mt-3" oninput="updatePreview()">
+                    </div>
+
+                    <!-- Ringkasan -->
+                    <div>
+                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Ringkasan Profesional</h3>
+                        <textarea id="ringkasan" rows="4" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
+                                  oninput="updatePreview()">Fresh Graduate Teknik Jaringan Komputer & Telekomunikasi yang teliti dan inovatif. Memiliki passion kuat di IT Support, network troubleshooting, dan pengembangan web. Siap berkontribusi dengan ide segar dan dedikasi tinggi.</textarea>
+                    </div>
+
+                    <!-- Pengalaman Kerja -->
+                    <div>
+                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pengalaman Kerja</h3>
+                        <div id="pengalaman-container" class="space-y-4"></div>
+                        <button onclick="tambahPengalaman()" class="mt-3 flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+                            <i class="fa-solid fa-plus"></i> Tambah Pengalaman
+                        </button>
+                    </div>
+
+                    <!-- Magang -->
+                    <div>
+                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pengalaman Magang</h3>
+                        <div id="magang-container" class="space-y-4"></div>
+                        <button onclick="tambahMagang()" class="mt-3 flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+                            <i class="fa-solid fa-plus"></i> Tambah Magang
+                        </button>
+                    </div>
+
+                    <!-- Pendidikan -->
+                    <div>
+                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pendidikan</h3>
+                        <div id="pendidikan-container" class="space-y-4"></div>
+                        <button onclick="tambahPendidikan()" class="mt-3 flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+                            <i class="fa-solid fa-plus"></i> Tambah Pendidikan
+                        </button>
+                    </div>
+
+                    <!-- Keterampilan & Proyek -->
+                    <div>
+                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Keterampilan</h3>
+                        <textarea id="keterampilan" rows="7" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
+                                  oninput="updatePreview()">• Network Administration & Troubleshooting
+• HTML, CSS, Tailwind CSS, JavaScript
+• Frontend Web Development
+• Microsoft Office & Google Workspace
+• Figma UI/UX Basics
+• Adobe Photoshop & Illustrator
+• Bahasa Inggris (Intermediate)</textarea>
+                    </div>
+
+                    <div>
+                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Proyek & Sertifikasi</h3>
+                        <textarea id="sertifikasi" rows="5" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
+                                  oninput="updatePreview()">• Sistem Monitoring Jaringan Sekolah Berbasis Web
+• Cisco Networking Academy Certificate
+• Proyek Website Sekolah dengan Tailwind CSS
+• Mini Project IoT Smart Monitoring</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PREVIEW -->
+            <div class="lg:col-span-7">
+                <div class="preview-header flex justify-between items-center mb-4 px-2 no-print">
+                    <h3 class="font-semibold text-emerald-700 flex items-center gap-x-2">
+                        <i class="fa-solid fa-eye"></i> Pratinjau CV Kreatif V5
+                    </h3>
+                    <span class="text-xs bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-3xl">MINIMAL ACCENT</span>
+                </div>
+                
+                <div class="preview-wrapper bg-white p-6 rounded-3xl shadow-inner overflow-x-auto">
+                    <div id="cv" class="a4-paper mx-auto relative">
+                        <div class="accent-bar"></div>
+                        <div class="main-area" id="cv-content"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Konfigurasi Supabase - Ganti dengan URL dan key Anda
-        const SUPABASE_URL = 'https://vnfimbhdoifpqmpwahrh.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuZmltYmhkb2lmcHFtcHdhaHJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4Mjg5OTcsImV4cCI6MjA3MTQwNDk5N30.WQREDE-yFP0BnaZagEUKEI5s0iPxXGsnmMm4WdUfEpw';
-        
-        let resendCooldown = 0;
-        let countdownInterval = null;
-        
-        // Fungsi untuk mendapatkan token akses dari URL (jika ada)
-        function getAccessTokenFromUrl() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('access_token') || urlParams.get('token');
-        }
-        
-        // Fungsi untuk mengonfirmasi email
-        async function confirmEmail() {
-            const confirmBtn = document.getElementById('confirmBtn');
-            const loading = document.getElementById('loading');
-            const checkmarkContainer = document.getElementById('checkmarkContainer');
-            const successMessage = document.getElementById('successMessage');
-            const errorMessage = document.getElementById('errorMessage');
-            
-            // Sembunyikan pesan error sebelumnya
-            errorMessage.style.display = 'none';
-            
-            // Tampilkan loading
-            confirmBtn.disabled = true;
-            confirmBtn.textContent = 'Memproses...';
-            loading.style.display = 'block';
-            
-            try {
-                const accessToken = getAccessTokenFromUrl();
-                
-                if (!accessToken) {
-                    throw new Error('Token verifikasi tidak ditemukan. Silakan gunakan link dari email verifikasi.');
-                }
-                
-                // Verifikasi email melalui Supabase API
-                const response = await fetch(`${SUPABASE_URL}/auth/v1/verify`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': SUPABASE_ANON_KEY
-                    },
-                    body: JSON.stringify({
-                        type: 'signup',
-                        token: accessToken
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.message || 'Gagal memverifikasi email');
-                }
-                
-                // Verifikasi berhasil
-                loading.style.display = 'none';
-                checkmarkContainer.style.display = 'block';
-                
-                // Tampilkan pesan sukses setelah animasi selesai
-                setTimeout(() => {
-                    successMessage.style.display = 'block';
-                    confirmBtn.style.display = 'none';
-                }, 1500);
-                
-            } catch (error) {
-                loading.style.display = 'none';
-                confirmBtn.disabled = false;
-                confirmBtn.textContent = 'Konfirmasi Email Sekarang';
-                
-                // Tampilkan pesan error
-                errorMessage.textContent = error.message;
-                errorMessage.style.display = 'block';
+        let cvData = { foto: null };
+
+        function previewFoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    cvData.foto = e.target.result;
+                    document.getElementById('foto-preview').src = cvData.foto;
+                    document.getElementById('foto-preview').classList.remove('hidden');
+                    updatePreview();
+                };
+                reader.readAsDataURL(input.files[0]);
             }
         }
-        
-        // Fungsi untuk mengirim ulang email verifikasi
-        async function resendVerificationEmail() {
-            const resendBtn = document.getElementById('resendBtn');
-            const countdownElement = document.getElementById('countdown');
-            const errorMessage = document.getElementById('errorMessage');
-            
-            if (resendCooldown > 0) return;
-            
-            // Sembunyikan pesan error sebelumnya
-            errorMessage.style.display = 'none';
-            
-            resendBtn.disabled = true;
-            resendBtn.textContent = 'Mengirim...';
-            
-            try {
-                // Kirim request untuk mengirim ulang email verifikasi
-                // Catatan: Di aplikasi nyata, Anda perlu mendapatkan access token pengguna yang login
-                const response = await fetch(`${SUPABASE_URL}/auth/v1/recover`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': SUPABASE_ANON_KEY
-                    },
-                    body: JSON.stringify({
-                        email: 'user@example.com' // Ganti dengan email pengguna yang sesuai
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.message || 'Gagal mengirim ulang email verifikasi');
-                }
-                
-                // Set cooldown 60 detik
-                resendCooldown = 60;
-                startCountdown();
-                
-                resendBtn.textContent = 'Terkirim!';
-                setTimeout(() => {
-                    resendBtn.textContent = 'Kirim Ulang Email';
-                }, 2000);
-                
-            } catch (error) {
-                errorMessage.textContent = error.message;
-                errorMessage.style.display = 'block';
-                resendBtn.disabled = false;
-                resendBtn.textContent = 'Kirim Ulang Email';
-            } finally {
-                setTimeout(() => {
-                    resendBtn.disabled = false;
-                }, 2000);
-            }
+
+        function tambahPengalaman() {
+            const container = document.getElementById('pengalaman-container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.className = "border border-slate-100 p-5 rounded-2xl space-y-3";
+            div.innerHTML = `
+                <input type="text" id="exp-posisi-${index}" placeholder="Posisi / Jabatan" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <input type="text" id="exp-perusahaan-${index}" placeholder="Nama Perusahaan" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <input type="text" id="exp-periode-${index}" placeholder="Periode" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <textarea id="exp-deskripsi-${index}" rows="3" placeholder="Deskripsi tugas & pencapaian" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()"></textarea>
+            `;
+            container.appendChild(div);
+            updatePreview();
         }
-        
-        // Fungsi untuk countdown pengiriman ulang
-        function startCountdown() {
-            const countdownElement = document.getElementById('countdown');
-            const resendBtn = document.getElementById('resendBtn');
-            
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-            }
-            
-            countdownElement.textContent = ` (${resendCooldown}s)`;
-            
-            countdownInterval = setInterval(() => {
-                resendCooldown--;
-                
-                if (resendCooldown <= 0) {
-                    clearInterval(countdownInterval);
-                    countdownElement.textContent = '';
-                    resendBtn.disabled = false;
-                } else {
-                    countdownElement.textContent = ` (${resendCooldown}s)`;
-                }
-            }, 1000);
+
+        function tambahMagang() {
+            const container = document.getElementById('magang-container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.className = "border border-slate-100 p-5 rounded-2xl space-y-3";
+            div.innerHTML = `
+                <input type="text" id="mag-posisi-${index}" placeholder="Posisi Magang" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <input type="text" id="mag-perusahaan-${index}" placeholder="Perusahaan / Instansi" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <input type="text" id="mag-periode-${index}" placeholder="Periode" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <textarea id="mag-deskripsi-${index}" rows="3" placeholder="Deskripsi tugas & pencapaian" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()"></textarea>
+            `;
+            container.appendChild(div);
+            updatePreview();
         }
-        
-        // Cek jika ada token di URL, otomatis verifikasi
-        document.addEventListener('DOMContentLoaded', function() {
-            const accessToken = getAccessTokenFromUrl();
-            if (accessToken) {
-                // Otomatis mulai verifikasi jika token ditemukan di URL
-                confirmEmail();
-            }
-        });
+
+        function tambahPendidikan() {
+            const container = document.getElementById('pendidikan-container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.className = "border border-slate-100 p-5 rounded-2xl space-y-3";
+            div.innerHTML = `
+                <input type="text" id="pend-nama-${index}" placeholder="Sekolah / Universitas & Jurusan" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <input type="text" id="pend-tahun-${index}" placeholder="Tahun" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+            `;
+            container.appendChild(div);
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const nama = document.getElementById('nama').value || "Nama Lengkap";
+            const telepon = document.getElementById('telepon').value || "";
+            const email = document.getElementById('email').value || "";
+            const alamat = document.getElementById('alamat').value || "";
+            const linkedin = document.getElementById('linkedin').value || "";
+            const ringkasan = document.getElementById('ringkasan').value || "";
+            const keterampilan = document.getElementById('keterampilan').value || "";
+            const sertifikasi = document.getElementById('sertifikasi').value || "";
+
+            const fotoHTML = cvData.foto 
+                ? `<img src="${cvData.foto}" class="profile-photo mx-auto block" alt="Foto Profil">` 
+                : `<div class="w-[128px] h-[128px] mx-auto bg-slate-100 rounded-full flex items-center justify-center text-slate-300"><i class="fa-solid fa-user text-7xl"></i></div>`;
+
+            let expHTML = '';
+            document.querySelectorAll('#pengalaman-container > div').forEach((child, i) => {
+                const posisi = child.querySelector(`#exp-posisi-${i}`)?.value.trim() || '';
+                const perusahaan = child.querySelector(`#exp-perusahaan-${i}`)?.value.trim() || '';
+                const periode = child.querySelector(`#exp-periode-${i}`)?.value.trim() || '';
+                const deskripsi = child.querySelector(`#exp-deskripsi-${i}`)?.value.trim() || '';
+                if (posisi || perusahaan) {
+                    expHTML += `<div class="mb-9"><p class="font-semibold text-lg">${posisi} — ${perusahaan}</p><p class="text-emerald-600 text-sm">${periode}</p><div class="mt-3 text-slate-700 whitespace-pre-line">${deskripsi.replace(/\n/g, '<br>')}</div></div>`;
+                }
+            });
+
+            let magangHTML = '';
+            document.querySelectorAll('#magang-container > div').forEach((child, i) => {
+                const posisi = child.querySelector(`#mag-posisi-${i}`)?.value.trim() || '';
+                const perusahaan = child.querySelector(`#mag-perusahaan-${i}`)?.value.trim() || '';
+                const periode = child.querySelector(`#mag-periode-${i}`)?.value.trim() || '';
+                const deskripsi = child.querySelector(`#mag-deskripsi-${i}`)?.value.trim() || '';
+                if (posisi || perusahaan) {
+                    magangHTML += `<div class="mb-9"><p class="font-semibold">${posisi} — ${perusahaan}</p><p class="text-emerald-600 text-sm">${periode}</p><div class="mt-3 text-slate-700 whitespace-pre-line">${deskripsi.replace(/\n/g, '<br>')}</div></div>`;
+                }
+            });
+
+            let pendHTML = '';
+            document.querySelectorAll('#pendidikan-container > div').forEach((child, i) => {
+                const nama = child.querySelector(`#pend-nama-${i}`)?.value.trim() || '';
+                const tahun = child.querySelector(`#pend-tahun-${i}`)?.value.trim() || '';
+                if (nama) pendHTML += `<div class="mb-7"><p class="font-semibold">${nama}</p><p class="text-slate-600">${tahun}</p></div>`;
+            });
+
+            const contentHTML = `
+                <div class="flex flex-col items-center text-center mb-10">
+                    ${fotoHTML}
+                    <h1 class="name mt-6">${nama}</h1>
+                    <div class="mt-3 flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm text-slate-600">
+                        <span>${telepon}</span>
+                        <span>${email}</span>
+                        <span>${alamat}</span>
+                        ${linkedin ? `<span>${linkedin}</span>` : ''}
+                    </div>
+                </div>
+
+                ${ringkasan ? `<div><h2 class="section-title">TENTANG SAYA</h2><p class="text-slate-700">${ringkasan}</p></div>` : ''}
+
+                ${expHTML ? `<div class="mt-14"><h2 class="section-title">PENGALAMAN KERJA</h2>${expHTML}</div>` : ''}
+
+                ${magangHTML ? `<div class="mt-14"><h2 class="section-title">PENGALAMAN MAGANG</h2>${magangHTML}</div>` : ''}
+
+                <div class="mt-14"><h2 class="section-title">PENDIDIKAN</h2><div class="mt-5">${pendHTML || '<p class="text-slate-500">Tambahkan pendidikan Anda</p>'}</div></div>
+
+                <div class="mt-14"><h2 class="section-title">KETERAMPILAN</h2><div class="mt-5 text-slate-700 whitespace-pre-line">${keterampilan.replace(/\n/g, '<br>')}</div></div>
+
+                ${sertifikasi ? `<div class="mt-14"><h2 class="section-title">PROYEK & SERTIFIKASI</h2><div class="mt-5 text-slate-700 whitespace-pre-line">${sertifikasi.replace(/\n/g, '<br>')}</div></div>` : ''}
+            `;
+
+            document.getElementById('cv-content').innerHTML = contentHTML;
+        }
+
+        function printLetter() { updatePreview(); window.print(); }
+        function generatePDF() { if (confirm('Simpan sebagai PDF?')) printLetter(); }
+        function saveAsImage() {
+            const cv = document.getElementById('cv');
+            html2canvas(cv, { scale: 3, backgroundColor: '#ffffff' }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `CV_Kreatif_V5_${document.getElementById('nama').value.replace(/[^a-zA-Z0-9]/g, '_') || 'CV'}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+        function autoSaveDraft() { alert('Draft CV V5 berhasil disimpan!'); }
+        function clearForm() { if (confirm('Reset semua data?')) location.reload(); }
+
+        // Inisialisasi
+        window.onload = () => {
+            tambahPendidikan();
+            document.getElementById('pend-nama-0').value = "SMK Nurul Ummah Paninggaran - Teknik Jaringan Komputer dan Telekomunikasi";
+            document.getElementById('pend-tahun-0').value = "2023 - 2026";
+
+            tambahPengalaman();
+            document.getElementById('exp-posisi-0').value = "IT Support";
+            document.getElementById('exp-perusahaan-0').value = "PT. ABC Digital";
+            document.getElementById('exp-periode-0').value = "Januari - Maret 2025";
+            document.getElementById('exp-deskripsi-0').value = "• Maintenance jaringan dan troubleshooting\n• Pembuatan website sekolah menggunakan Tailwind CSS";
+
+            tambahMagang();
+
+            updatePreview();
+        };
     </script>
 </body>
 </html>
-
