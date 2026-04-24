@@ -2,396 +2,492 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV Kreatif V5 - Minimal Accent</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>CV Kreatif V5 - Writehub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+        /* --- GLOBAL & UI THEME --- */
+        :root {
+            --primary: #10b981; /* Emerald 500 */
+            --primary-dark: #047857;
+            --bg-surface: #f0fdf4; /* Very light emerald tint */
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --border: #d1fae5;
+            --text-main: #1f2937;
+            --text-muted: #64748b;
+        }
+        body.dark-mode {
+            --bg-surface: #064e3b; /* Dark Emerald */
+            --card-bg: rgba(6, 78, 59, 0.6);
+            --border: #34d399;
+            --text-main: #ecfdf5;
+            --text-muted: #a7f3d0;
+        }
         
-        .a4-paper {
-            width: 210mm;
-            min-height: 297mm;
-            background: white;
-            box-shadow: 0 25px 60px -15px rgb(15 23 42 / 0.2);
-            margin: 30px auto;
-            padding: 0;
-            overflow: hidden;
+        .bg-dots {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            background-image: radial-gradient(circle, #6ee7b7 1px, transparent 1px);
+            background-size: 24px 24px; opacity: 0.15;
+        }
+        .dark-mode .bg-dots { opacity: 0.05; background-image: radial-gradient(circle, #34d399 1px, transparent 1px); }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.1);
+        }
+
+        /* Modern Inputs */
+        .fi {
+            width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
+            border-radius: 12px; font-family: inherit; font-size: 13px;
+            color: var(--text-main); background: rgba(255,255,255,0.6);
+            transition: border-color .2s, box-shadow .2s; outline: none;
+        }
+        .dark-mode .fi { background: rgba(0,0,0,0.3); color: #ecfdf5; }
+        .fi:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
+
+        /* --- CV DESIGN V5: MINIMAL ACCENT --- */
+        .a4-v5 {
+            width: 210mm; min-height: 297mm; 
+            background: #ffffff;
             position: relative;
-            font-family: 'Inter', system-ui, sans-serif;
-            font-size: 11.1pt;
-            line-height: 1.78;
-            color: #1f2937;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            font-size: 10.5pt;
+            line-height: 1.6;
+            color: #334155;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
-        .accent-bar {
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 14mm;
+        /* Accent Bar Kiri */
+        .v5-accent {
+            position: absolute; top: 0; left: 0; bottom: 0; width: 14mm;
             background: linear-gradient(to bottom, #10b981, #059669);
+            z-index: 10;
         }
 
-        .main-area {
-            padding: 45px 48px 45px 68px;
+        /* Area Konten */
+        .v5-content {
+            padding: 35mm 25mm; /* Padding besar untuk kesan minimalis */
         }
 
-        .name {
+        /* Header Tengah */
+        .v5-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .v5-photo {
+            width: 130px; height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ecfdf5;
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.3);
+            margin: 0 auto 20px auto;
+        }
+        .v5-name {
             font-family: 'Playfair Display', serif;
-            font-size: 36pt;
+            font-size: 32pt;
             font-weight: 700;
-            letter-spacing: -2px;
             color: #111827;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+        .v5-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 11pt;
+            font-weight: 600;
+            color: #10b981;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+        .v5-contact-bar {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 15px;
+            font-size: 9pt; color: #64748b;
+        }
+        .v5-contact-item {
+            display: flex; align-items: center; gap: 6px;
         }
 
-        .section-title {
-            font-size: 14.5pt;
+        /* Section Titles */
+        .v5-section {
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 20px; /* Space for accent line */
+        }
+        .v5-section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 13pt;
             font-weight: 700;
             color: #10b981;
-            margin-bottom: 12px;
-            position: relative;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+        /* Decorative underline */
+        .v5-section-title::after {
+            content: ''; display: block; width: 40px; height: 3px; 
+            background: #10b981; margin-top: 5px; border-radius: 2px;
         }
         
-        .section-title:after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 40px;
-            height: 3px;
-            background: #10b981;
+        /* Experience & Edu Items */
+        .v5-item { margin-bottom: 20px; }
+        .v5-item-header {
+            display: flex; justify-content: space-between; align-items: baseline;
+            margin-bottom: 4px;
         }
-
-        .profile-photo {
-            width: 135px;
-            height: 135px;
-            object-fit: cover;
-            border: 6px solid #f3f4f6;
-            border-radius: 9999px;
-            box-shadow: 0 10px 25px -5px rgb(16 185 129 / 0.2);
+        .v5-role { font-weight: 700; font-size: 10.5pt; color: #1e293b; }
+        .v5-date { font-size: 9pt; color: #10b981; font-weight: 600; }
+        .v5-place { font-style: italic; color: #64748b; font-size: 9.5pt; margin-bottom: 6px; }
+        .v5-desc { font-size: 9.5pt; color: #475569; line-height: 1.6; }
+        
+        /* Skills (Simple List) */
+        .v5-skills-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+        }
+        .v5-skill-item {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 9.5pt; color: #334155;
+        }
+        .v5-skill-item::before {
+            content: '•'; color: #10b981; font-weight: bold;
         }
 
         @media print {
             .no-print { display: none !important; }
-            .a4-paper { margin: 0; box-shadow: none; }
+            body { background: white !important; }
+            .bg-dots, .preview-wrap { display: none !important; }
+            .a4-v5 { box-shadow: none; margin: 0; width: 100%; height: 100%; }
         }
         @page { size: A4 portrait; margin: 0; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-emerald-50 to-slate-100 font-sans">
+<body class="bg-[var(--bg-surface)] text-[var(--text-main)] min-h-screen transition-colors duration-300">
 
-    <!-- NAVBAR -->
-    <nav class="bg-zinc-900 text-white sticky top-0 z-50 no-print shadow-xl">
-        <div class="max-w-screen-2xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-x-3">
-                <i class="fa-solid fa-leaf text-3xl text-emerald-400"></i>
-                <div>
-                    <h1 class="text-2xl font-semibold tracking-tight">CV KREATIF <span class="text-emerald-400">V5</span></h1>
-                    <p class="text-xs text-slate-400 -mt-0.5">Minimalist Accent • Premium Clean</p>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-x-3 text-sm">
-                <button onclick="autoSaveDraft()" class="flex items-center gap-x-2 px-5 h-10 bg-white/10 hover:bg-white/20 rounded-2xl font-medium">
-                    <i class="fa-solid fa-floppy-disk"></i> Simpan Draft
-                </button>
-                <button onclick="saveAsImage()" class="flex items-center gap-x-2 px-5 h-10 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-medium">
-                    <i class="fa-solid fa-image"></i> PNG
-                </button>
-                <button onclick="generatePDF()" class="flex items-center gap-x-2 px-6 h-10 bg-teal-600 hover:bg-teal-700 text-white rounded-2xl font-medium">
-                    <i class="fa-solid fa-file-pdf"></i> PDF
-                </button>
-                <button onclick="printLetter()" class="flex items-center gap-x-2 px-6 h-10 bg-white text-zinc-900 hover:bg-slate-100 rounded-2xl font-medium">
-                    <i class="fa-solid fa-print"></i> Cetak
-                </button>
-                <button onclick="clearForm()" class="flex items-center justify-center w-10 h-10 text-red-400 hover:text-red-500 rounded-2xl">
-                    <i class="fa-solid fa-trash text-xl"></i>
-                </button>
+<div class="bg-dots"></div>
+
+<!-- NAVBAR -->
+<nav class="sticky top-0 z-50 glass-card border-b border-[var(--border)] no-print">
+    <div class="max-w-[1600px] mx-auto px-4 md:px-6 py-3 flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-9 h-9 rounded-lg bg-emerald-500/15 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-leaf text-emerald-500 text-sm"></i></div>
+            <div class="min-w-0">
+                <h1 class="text-[15px] font-bold tracking-tight truncate">CV Kreatif <span class="text-emerald-600">V5</span></h1>
+                <p class="text-[8px] text-[var(--text-muted)] -mt-0.5 tracking-widest uppercase">Minimal Accent • Centered</p>
             </div>
         </div>
-    </nav>
+        <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button id="btnDark" class="flex items-center justify-center w-8 h-8 bg-[var(--border)]/50 hover:bg-[var(--border)] rounded-lg transition text-[var(--text-main)]"><i class="fa-solid fa-moon text-xs"></i></button>
+            <button onclick="saveDraft()" class="hide-sm flex items-center gap-1.5 px-3 h-8 bg-[var(--border)]/50 hover:bg-[var(--border)] rounded-lg text-[10.5px] font-medium transition"><i class="fa-solid fa-floppy-disk"></i>Simpan</button>
+            <button onclick="saveAsImage()" class="flex items-center gap-1.5 px-3.5 h-8 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-[10.5px] font-semibold transition text-white"><i class="fa-solid fa-image"></i><span class="hide-sm">PNG</span></button>
+            <button onclick="printCV()" class="flex items-center gap-1.5 px-3.5 h-8 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-[10.5px] font-semibold transition text-white"><i class="fa-solid fa-file-pdf"></i><span class="hide-sm">PDF</span></button>
+        </div>
+    </div>
+</nav>
 
-    <div class="max-w-screen-2xl mx-auto px-6 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            <!-- FORM INPUT -->
-            <div class="lg:col-span-5 bg-white rounded-3xl shadow-2xl p-8 no-print overflow-auto max-h-screen">
-                <div class="mb-8">
-                    <h2 class="text-2xl font-semibold text-emerald-700">CV Kreatif V5</h2>
-                    <p class="text-emerald-600 text-sm mt-1">Minimalist dengan Accent Bar</p>
+<div class="max-w-[1600px] mx-auto px-4 md:px-6 py-5">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- FORM EDITOR (LEFT) -->
+        <div class="lg:col-span-5 no-print">
+            <div class="glass-card rounded-2xl p-6 max-h-[calc(100vh-140px)] overflow-y-auto custom-scroll">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-bold text-[var(--text-main)]">Editor V5</h2>
+                    <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-1 rounded">Accent Style</span>
                 </div>
-                
-                <div class="space-y-9">
+
+                <div class="space-y-6">
                     <!-- Foto -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-2">Foto Profil</label>
+                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-2 block">Foto Profil</label>
                         <input type="file" id="foto-upload" accept="image/*" class="hidden" onchange="previewFoto(this)">
-                        <button onclick="document.getElementById('foto-upload').click()" 
-                                class="w-full h-40 border-2 border-dashed border-emerald-300 hover:border-emerald-500 rounded-3xl flex flex-col items-center justify-center text-slate-500">
-                            <i class="fa-solid fa-user-circle text-6xl mb-3"></i>
-                            <span class="text-sm font-medium">Upload Foto</span>
+                        <button onclick="document.getElementById('foto-upload').click()" class="w-full py-3 border-2 border-dashed border-[var(--border)] rounded-xl text-[var(--text-muted)] hover:border-emerald-500 text-sm transition">
+                            <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload Foto
                         </button>
-                        <img id="foto-preview" class="hidden mx-auto mt-4 rounded-3xl shadow" style="width:120px; height:120px; object-fit:cover;">
                     </div>
 
-                    <!-- Data Diri -->
+                    <!-- Identitas -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Data Diri</h3>
-                        <input id="nama" type="text" value="Muhammad Hafis" placeholder="Nama Lengkap" 
-                               class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mb-4" oninput="updatePreview()">
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <input id="telepon" type="tel" value="0856-1234-5678" placeholder="Telepon" 
-                                   class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                            <input id="email" type="email" value="hafis@example.com" placeholder="Email" 
-                                   class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                        <h3 class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-3 border-b border-[var(--border)] pb-1">Data Diri</h3>
+                        <div class="grid gap-3">
+                            <input id="nama" class="fi" placeholder="Nama Lengkap" value="Muhammad Hafis">
+                            <input id="role" class="fi" placeholder="Posisi / Gelar Singkat" value="Network Engineer">
+                            <input id="email" class="fi" placeholder="Email" value="hafis@example.com">
+                            <input id="phone" class="fi" placeholder="No. Telepon" value="0856-1234-5678">
+                            <input id="address" class="fi" placeholder="Lokasi" value="Pekalongan, Indonesia">
                         </div>
-                        <input id="alamat" type="text" value="Paninggaran, Pekalongan, Jawa Tengah" placeholder="Domisili" 
-                               class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mt-4" oninput="updatePreview()">
-                        <input id="linkedin" type="text" value="linkedin.com/in/hafis" placeholder="LinkedIn / Portfolio" 
-                               class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mt-3" oninput="updatePreview()">
                     </div>
 
-                    <!-- Ringkasan -->
+                    <!-- Profil -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Ringkasan Profesional</h3>
-                        <textarea id="ringkasan" rows="4" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
-                                  oninput="updatePreview()">Fresh Graduate Teknik Jaringan Komputer & Telekomunikasi yang teliti dan inovatif. Memiliki passion kuat di IT Support, network troubleshooting, dan pengembangan web. Siap berkontribusi dengan ide segar dan dedikasi tinggi.</textarea>
+                        <h3 class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-3 border-b border-[var(--border)] pb-1">Ringkasan</h3>
+                        <textarea id="profil" class="fi" rows="4">Fresh graduate dengan ketertarikan mendalam pada infrastruktur jaringan dan keamanan siber. Terbiasa dengan konfigurasi router, switching, dan troubleshooting server. Memiliki etos kerja tinggi dan kemampuan adaptasi yang cepat di lingkungan IT.</textarea>
                     </div>
 
-                    <!-- Pengalaman Kerja -->
+                    <!-- Pengalaman -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pengalaman Kerja</h3>
-                        <div id="pengalaman-container" class="space-y-4"></div>
-                        <button onclick="tambahPengalaman()" class="mt-3 flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-medium">
-                            <i class="fa-solid fa-plus"></i> Tambah Pengalaman
-                        </button>
-                    </div>
-
-                    <!-- Magang -->
-                    <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pengalaman Magang</h3>
-                        <div id="magang-container" class="space-y-4"></div>
-                        <button onclick="tambahMagang()" class="mt-3 flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-medium">
-                            <i class="fa-solid fa-plus"></i> Tambah Magang
-                        </button>
+                        <div class="flex justify-between items-end mb-3 border-b border-[var(--border)] pb-1">
+                            <h3 class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Pengalaman Kerja</h3>
+                            <button onclick="addItem('exp')" class="text-xs text-emerald-600 hover:text-emerald-700 font-bold">+ Tambah</button>
+                        </div>
+                        <div id="exp-container" class="space-y-4"></div>
                     </div>
 
                     <!-- Pendidikan -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pendidikan</h3>
-                        <div id="pendidikan-container" class="space-y-4"></div>
-                        <button onclick="tambahPendidikan()" class="mt-3 flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-medium">
-                            <i class="fa-solid fa-plus"></i> Tambah Pendidikan
-                        </button>
+                        <div class="flex justify-between items-end mb-3 border-b border-[var(--border)] pb-1">
+                            <h3 class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Pendidikan</h3>
+                            <button onclick="addItem('edu')" class="text-xs text-emerald-600 hover:text-emerald-700 font-bold">+ Tambah</button>
+                        </div>
+                        <div id="edu-container" class="space-y-4"></div>
                     </div>
 
-                    <!-- Keterampilan & Proyek -->
+                    <!-- Skill -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Keterampilan</h3>
-                        <textarea id="keterampilan" rows="7" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
-                                  oninput="updatePreview()">• Network Administration & Troubleshooting
-• HTML, CSS, Tailwind CSS, JavaScript
-• Frontend Web Development
-• Microsoft Office & Google Workspace
-• Figma UI/UX Basics
-• Adobe Photoshop & Illustrator
-• Bahasa Inggris (Intermediate)</textarea>
-                    </div>
-
-                    <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Proyek & Sertifikasi</h3>
-                        <textarea id="sertifikasi" rows="5" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
-                                  oninput="updatePreview()">• Sistem Monitoring Jaringan Sekolah Berbasis Web
-• Cisco Networking Academy Certificate
-• Proyek Website Sekolah dengan Tailwind CSS
-• Mini Project IoT Smart Monitoring</textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PREVIEW -->
-            <div class="lg:col-span-7">
-                <div class="preview-header flex justify-between items-center mb-4 px-2 no-print">
-                    <h3 class="font-semibold text-emerald-700 flex items-center gap-x-2">
-                        <i class="fa-solid fa-eye"></i> Pratinjau CV Kreatif V5
-                    </h3>
-                    <span class="text-xs bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-3xl">MINIMAL ACCENT</span>
-                </div>
-                
-                <div class="preview-wrapper bg-white p-6 rounded-3xl shadow-inner overflow-x-auto">
-                    <div id="cv" class="a4-paper mx-auto relative">
-                        <div class="accent-bar"></div>
-                        <div class="main-area" id="cv-content"></div>
+                        <h3 class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-3 border-b border-[var(--border)] pb-1">Keahlian (Pisahkan dengan Enter)</h3>
+                        <textarea id="skills" class="fi" rows="6">Network Troubleshooting
+Cisco Packet Tracer
+MikroTik Configuration
+Linux Server Administration
+Python Scripting Basics
+HTML & CSS
+Team Collaboration</textarea>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        let cvData = { foto: null };
+        <!-- PREVIEW AREA (RIGHT) -->
+        <div class="lg:col-span-7">
+            <div class="preview-wrap bg-[#e2e8f0] rounded-xl p-8 overflow-auto">
+                <!-- KERTAS A4 V5 -->
+                <div id="cv-doc" class="a4-v5 mx-auto">
+                    <!-- Accent Bar -->
+                    <div class="v5-accent"></div>
+                    
+                    <div class="v5-content">
+                        <!-- Header Centered -->
+                        <div class="v5-header">
+                            <img id="cv-foto" src="" class="v5-photo hidden">
+                            <div id="cv-foto-placeholder" class="w-[130px] h-[130px] mx-auto bg-slate-100 rounded-full flex items-center justify-center text-slate-300 hidden"><i class="fa-solid fa-user text-5xl"></i></div>
+                            
+                            <h1 class="v5-name" id="cv-nama">Muhammad Hafis</h1>
+                            <p class="v5-title" id="cv-role">Network Engineer</p>
+                            
+                            <div class="v5-contact-bar">
+                                <div class="v5-contact-item"><i class="fa-solid fa-envelope"></i> <span id="cv-email">hafis@example.com</span></div>
+                                <div class="v5-contact-item"><i class="fa-solid fa-phone"></i> <span id="cv-phone">0856-1234-5678</span></div>
+                                <div class="v5-contact-item"><i class="fa-solid fa-location-dot"></i> <span id="cv-address">Pekalongan</span></div>
+                            </div>
+                        </div>
 
-        function previewFoto(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    cvData.foto = e.target.result;
-                    document.getElementById('foto-preview').src = cvData.foto;
-                    document.getElementById('foto-preview').classList.remove('hidden');
-                    updatePreview();
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
+                        <!-- Profil -->
+                        <div class="v5-section">
+                            <h3 class="v5-section-title">Tentang Saya</h3>
+                            <p class="v5-desc" id="cv-profil">Fresh graduate dengan ketertarikan...</p>
+                        </div>
 
-        function tambahPengalaman() {
-            const container = document.getElementById('pengalaman-container');
-            const index = container.children.length;
-            const div = document.createElement('div');
-            div.className = "border border-slate-100 p-5 rounded-2xl space-y-3";
-            div.innerHTML = `
-                <input type="text" id="exp-posisi-${index}" placeholder="Posisi / Jabatan" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="exp-perusahaan-${index}" placeholder="Nama Perusahaan" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="exp-periode-${index}" placeholder="Periode" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                <textarea id="exp-deskripsi-${index}" rows="3" placeholder="Deskripsi tugas & pencapaian" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()"></textarea>
-            `;
-            container.appendChild(div);
-            updatePreview();
-        }
+                        <!-- Pengalaman -->
+                        <div class="v5-section">
+                            <h3 class="v5-section-title">Pengalaman Kerja</h3>
+                            <div id="cv-exp-list"></div>
+                        </div>
 
-        function tambahMagang() {
-            const container = document.getElementById('magang-container');
-            const index = container.children.length;
-            const div = document.createElement('div');
-            div.className = "border border-slate-100 p-5 rounded-2xl space-y-3";
-            div.innerHTML = `
-                <input type="text" id="mag-posisi-${index}" placeholder="Posisi Magang" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="mag-perusahaan-${index}" placeholder="Perusahaan / Instansi" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="mag-periode-${index}" placeholder="Periode" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                <textarea id="mag-deskripsi-${index}" rows="3" placeholder="Deskripsi tugas & pencapaian" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()"></textarea>
-            `;
-            container.appendChild(div);
-            updatePreview();
-        }
+                        <!-- Pendidikan -->
+                        <div class="v5-section">
+                            <h3 class="v5-section-title">Pendidikan</h3>
+                            <div id="cv-edu-list"></div>
+                        </div>
 
-        function tambahPendidikan() {
-            const container = document.getElementById('pendidikan-container');
-            const index = container.children.length;
-            const div = document.createElement('div');
-            div.className = "border border-slate-100 p-5 rounded-2xl space-y-3";
-            div.innerHTML = `
-                <input type="text" id="pend-nama-${index}" placeholder="Sekolah / Universitas & Jurusan" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="pend-tahun-${index}" placeholder="Tahun" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-            `;
-            container.appendChild(div);
-            updatePreview();
-        }
+                        <!-- Skills -->
+                        <div class="v5-section">
+                            <h3 class="v5-section-title">Keahlian</h3>
+                            <div class="v5-skills-grid" id="cv-skills-list">
+                                <!-- Skills injected here -->
+                            </div>
+                        </div>
 
-        function updatePreview() {
-            const nama = document.getElementById('nama').value || "Nama Lengkap";
-            const telepon = document.getElementById('telepon').value || "";
-            const email = document.getElementById('email').value || "";
-            const alamat = document.getElementById('alamat').value || "";
-            const linkedin = document.getElementById('linkedin').value || "";
-            const ringkasan = document.getElementById('ringkasan').value || "";
-            const keterampilan = document.getElementById('keterampilan').value || "";
-            const sertifikasi = document.getElementById('sertifikasi').value || "";
-
-            const fotoHTML = cvData.foto 
-                ? `<img src="${cvData.foto}" class="profile-photo mx-auto block" alt="Foto Profil">` 
-                : `<div class="w-[128px] h-[128px] mx-auto bg-slate-100 rounded-full flex items-center justify-center text-slate-300"><i class="fa-solid fa-user text-7xl"></i></div>`;
-
-            let expHTML = '';
-            document.querySelectorAll('#pengalaman-container > div').forEach((child, i) => {
-                const posisi = child.querySelector(`#exp-posisi-${i}`)?.value.trim() || '';
-                const perusahaan = child.querySelector(`#exp-perusahaan-${i}`)?.value.trim() || '';
-                const periode = child.querySelector(`#exp-periode-${i}`)?.value.trim() || '';
-                const deskripsi = child.querySelector(`#exp-deskripsi-${i}`)?.value.trim() || '';
-                if (posisi || perusahaan) {
-                    expHTML += `<div class="mb-9"><p class="font-semibold text-lg">${posisi} — ${perusahaan}</p><p class="text-emerald-600 text-sm">${periode}</p><div class="mt-3 text-slate-700 whitespace-pre-line">${deskripsi.replace(/\n/g, '<br>')}</div></div>`;
-                }
-            });
-
-            let magangHTML = '';
-            document.querySelectorAll('#magang-container > div').forEach((child, i) => {
-                const posisi = child.querySelector(`#mag-posisi-${i}`)?.value.trim() || '';
-                const perusahaan = child.querySelector(`#mag-perusahaan-${i}`)?.value.trim() || '';
-                const periode = child.querySelector(`#mag-periode-${i}`)?.value.trim() || '';
-                const deskripsi = child.querySelector(`#mag-deskripsi-${i}`)?.value.trim() || '';
-                if (posisi || perusahaan) {
-                    magangHTML += `<div class="mb-9"><p class="font-semibold">${posisi} — ${perusahaan}</p><p class="text-emerald-600 text-sm">${periode}</p><div class="mt-3 text-slate-700 whitespace-pre-line">${deskripsi.replace(/\n/g, '<br>')}</div></div>`;
-                }
-            });
-
-            let pendHTML = '';
-            document.querySelectorAll('#pendidikan-container > div').forEach((child, i) => {
-                const nama = child.querySelector(`#pend-nama-${i}`)?.value.trim() || '';
-                const tahun = child.querySelector(`#pend-tahun-${i}`)?.value.trim() || '';
-                if (nama) pendHTML += `<div class="mb-7"><p class="font-semibold">${nama}</p><p class="text-slate-600">${tahun}</p></div>`;
-            });
-
-            const contentHTML = `
-                <div class="flex flex-col items-center text-center mb-10">
-                    ${fotoHTML}
-                    <h1 class="name mt-6">${nama}</h1>
-                    <div class="mt-3 flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm text-slate-600">
-                        <span>${telepon}</span>
-                        <span>${email}</span>
-                        <span>${alamat}</span>
-                        ${linkedin ? `<span>${linkedin}</span>` : ''}
                     </div>
                 </div>
+            </div>
+        </div>
 
-                ${ringkasan ? `<div><h2 class="section-title">TENTANG SAYA</h2><p class="text-slate-700">${ringkasan}</p></div>` : ''}
+    </div>
+</div>
 
-                ${expHTML ? `<div class="mt-14"><h2 class="section-title">PENGALAMAN KERJA</h2>${expHTML}</div>` : ''}
+<script>
+    // --- DATA MANAGEMENT ---
+    let cvData = { foto: null };
 
-                ${magangHTML ? `<div class="mt-14"><h2 class="section-title">PENGALAMAN MAGANG</h2>${magangHTML}</div>` : ''}
-
-                <div class="mt-14"><h2 class="section-title">PENDIDIKAN</h2><div class="mt-5">${pendHTML || '<p class="text-slate-500">Tambahkan pendidikan Anda</p>'}</div></div>
-
-                <div class="mt-14"><h2 class="section-title">KETERAMPILAN</h2><div class="mt-5 text-slate-700 whitespace-pre-line">${keterampilan.replace(/\n/g, '<br>')}</div></div>
-
-                ${sertifikasi ? `<div class="mt-14"><h2 class="section-title">PROYEK & SERTIFIKASI</h2><div class="mt-5 text-slate-700 whitespace-pre-line">${sertifikasi.replace(/\n/g, '<br>')}</div></div>` : ''}
+    function addItem(type) {
+        const container = document.getElementById(type + '-container');
+        const idx = container.children.length;
+        const div = document.createElement('div');
+        div.className = 'p-3 bg-[var(--bg-surface)] rounded-xl border border-[var(--border)] space-y-2';
+        
+        if(type === 'exp') {
+            div.innerHTML = `
+                <input type="text" id="exp-role-${idx}" class="fi bg-transparent" placeholder="Jabatan" oninput="renderCV()">
+                <input type="text" id="exp-company-${idx}" class="fi bg-transparent" placeholder="Perusahaan" oninput="renderCV()">
+                <input type="text" id="exp-date-${idx}" class="fi bg-transparent" placeholder="Periode" oninput="renderCV()">
+                <textarea id="exp-desc-${idx}" class="fi bg-transparent" rows="2" placeholder="Deskripsi..." oninput="renderCV()"></textarea>
             `;
+        } else {
+            div.innerHTML = `
+                <input type="text" id="edu-school-${idx}" class="fi bg-transparent" placeholder="Nama Sekolah / Kampus" oninput="renderCV()">
+                <input type="text" id="edu-degree-${idx}" class="fi bg-transparent" placeholder="Jurusan / Gelar" oninput="renderCV()">
+                <input type="text" id="edu-year-${idx}" class="fi bg-transparent" placeholder="Tahun Lulus" oninput="renderCV()">
+            `;
+        }
+        container.appendChild(div);
+    }
 
-            document.getElementById('cv-content').innerHTML = contentHTML;
+    function previewFoto(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                cvData.foto = e.target.result;
+                renderCV();
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function renderCV() {
+        // Identity
+        const nama = v('nama'); 
+        document.getElementById('cv-nama').textContent = nama || 'Nama Anda';
+        document.getElementById('cv-role').textContent = v('role');
+        document.getElementById('cv-email').textContent = v('email');
+        document.getElementById('cv-phone').textContent = v('phone');
+        document.getElementById('cv-address').textContent = v('address');
+        document.getElementById('cv-profil').textContent = v('profil');
+
+        // Photo
+        const img = document.getElementById('cv-foto');
+        const ph = document.getElementById('cv-foto-placeholder');
+        if(cvData.foto) {
+            img.src = cvData.foto;
+            img.classList.remove('hidden');
+            ph.classList.add('hidden');
+        } else if (!cvData.foto) {
+            img.classList.add('hidden');
+            // Tampilkan placeholder jika kosong
+            // (Opsional: Bisa dihidden total jika mau clean)
         }
 
-        function printLetter() { updatePreview(); window.print(); }
-        function generatePDF() { if (confirm('Simpan sebagai PDF?')) printLetter(); }
-        function saveAsImage() {
-            const cv = document.getElementById('cv');
-            html2canvas(cv, { scale: 3, backgroundColor: '#ffffff' }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `CV_Kreatif_V5_${document.getElementById('nama').value.replace(/[^a-zA-Z0-9]/g, '_') || 'CV'}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
+        // Experience
+        const expContainer = document.getElementById('cv-exp-list');
+        expContainer.innerHTML = '';
+        document.querySelectorAll('#exp-container > div').forEach((child, i) => {
+            const role = child.querySelector(`#exp-role-${i}`)?.value;
+            const comp = child.querySelector(`#exp-company-${i}`)?.value;
+            const date = child.querySelector(`#exp-date-${i}`)?.value;
+            const desc = child.querySelector(`#exp-desc-${i}`)?.value;
+            if(role) {
+                const div = document.createElement('div');
+                div.className = 'v5-item';
+                div.innerHTML = `
+                    <div class="v5-item-header">
+                        <span class="v5-role">${role}</span>
+                        <span class="v5-date">${date}</span>
+                    </div>
+                    <div class="v5-place">${comp}</div>
+                    <div class="v5-desc">${desc}</div>
+                `;
+                expContainer.appendChild(div);
+            }
+        });
+
+        // Education
+        const eduContainer = document.getElementById('cv-edu-list');
+        eduContainer.innerHTML = '';
+        document.querySelectorAll('#edu-container > div').forEach((child, i) => {
+            const school = child.querySelector(`#edu-school-${i}`)?.value;
+            const degree = child.querySelector(`#edu-degree-${i}`)?.value;
+            const year = child.querySelector(`#edu-year-${i}`)?.value;
+            if(school) {
+                const div = document.createElement('div');
+                div.className = 'v5-item';
+                div.innerHTML = `
+                    <div class="v5-item-header">
+                        <span class="v5-role">${school}</span>
+                        <span class="v5-date">${year}</span>
+                    </div>
+                    <div class="v5-place">${degree}</div>
+                `;
+                eduContainer.appendChild(div);
+            }
+        });
+
+        // Skills (Grid Layout)
+        const skillText = v('skills');
+        const skillContainer = document.getElementById('cv-skills-list');
+        skillContainer.innerHTML = '';
+        if(skillText) {
+            skillText.split('\n').forEach(line => {
+                if(line.trim()) {
+                    const div = document.createElement('div');
+                    div.className = 'v5-skill-item';
+                    div.textContent = line.trim();
+                    skillContainer.appendChild(div);
+                }
             });
         }
-        function autoSaveDraft() { alert('Draft CV V5 berhasil disimpan!'); }
-        function clearForm() { if (confirm('Reset semua data?')) location.reload(); }
+    }
 
-        // Inisialisasi
-        window.onload = () => {
-            tambahPendidikan();
-            document.getElementById('pend-nama-0').value = "SMK Nurul Ummah Paninggaran - Teknik Jaringan Komputer dan Telekomunikasi";
-            document.getElementById('pend-tahun-0').value = "2023 - 2026";
+    function v(id) { return document.getElementById(id).value; }
 
-            tambahPengalaman();
-            document.getElementById('exp-posisi-0').value = "IT Support";
-            document.getElementById('exp-perusahaan-0').value = "PT. ABC Digital";
-            document.getElementById('exp-periode-0').value = "Januari - Maret 2025";
-            document.getElementById('exp-deskripsi-0').value = "• Maintenance jaringan dan troubleshooting\n• Pembuatan website sekolah menggunakan Tailwind CSS";
+    // --- ACTIONS ---
+    function saveDraft() { alert('Draft V5 disimpan!'); }
+    function printCV() { renderCV(); window.print(); }
+    function saveAsImage() {
+        const element = document.getElementById('cv-doc');
+        html2canvas(element, { scale: 3, useCORS: true }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `CV_V5_${v('nama').replace(/\s+/g,'_')}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    }
 
-            tambahMagang();
+    // --- DARK MODE ---
+    document.getElementById('btnDark').addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        const btn = document.getElementById('btnDark');
+        btn.innerHTML = isDark ? '<i class="fa-solid fa-sun text-xs"></i>' : '<i class="fa-solid fa-moon text-xs"></i>';
+    });
 
-            updatePreview();
-        };
-    </script>
+    // --- INITIALIZATION ---
+    window.onload = () => {
+        addItem('exp');
+        const exp0 = document.querySelector('#exp-role-0');
+        if(exp0) {
+            exp0.value = "Junior Network Administrator";
+            document.querySelector('#exp-company-0').value = "PT Connect Indonesia";
+            document.querySelector('#exp-date-0').value = "Jan 2024 - Apr 2024";
+            document.querySelector('#exp-desc-0').value = "Memonitor traffic jaringan harian dan konfigurasi MikroTik untuk klien kantor.";
+        }
+
+        addItem('edu');
+        const edu0 = document.querySelector('#edu-school-0');
+        if(edu0) {
+            edu0.value = "Universitas Teknologi Nasional";
+            document.querySelector('#edu-degree-0').value = "Teknik Informatika (S1)";
+            document.querySelector('#edu-year-0').value = "2020 - 2024";
+        }
+
+        renderCV();
+    };
+</script>
 </body>
 </html>
